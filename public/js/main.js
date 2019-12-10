@@ -35,9 +35,10 @@ var app = {
   },
 
   chat: function(roomId, username){
-    
+   
     var socket = io('/chatroom', { transports: ['websocket'] });
 
+      console.log( "chat: function : " + username)
       // When socket connects, join the current chatroom
       socket.on('connect', function () {
 

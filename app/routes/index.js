@@ -11,6 +11,7 @@ var Room = require('../models/room');
 router.get('/', function(req, res, next) {
 	// If user is already logged in, then redirect to rooms page
 	if(req.isAuthenticated()){
+		
 		res.redirect('/rooms');
 	}
 	else{

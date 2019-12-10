@@ -5,6 +5,8 @@ var redis 	= require('redis').createClient;
 var adapter = require('socket.io-redis');
 
 var Room = require('../models/room');
+var Message = require('../models/message')
+
 
 /**
  * Encapsulates all code for emitting and listening to socket events
@@ -34,9 +36,15 @@ var ioEvents = function(io) {
 		});
 	});
 
+
+	// io.of('/chatroom').clients((error, clients) =>{
+	// 	if(error) throw error, 
+	// 	console.log(clients)
+	// })
+
 	// Chatroom namespace
 	io.of('/chatroom').on('connection', function(socket) {
-
+		console.log('client connected ' + socket.id);
 		// Join a chatroom
 		socket.on('join', function(roomId) {
 			Room.findById(roomId, function(err, room){
@@ -103,8 +111,24 @@ var ioEvents = function(io) {
 			// No need to emit 'addMessage' to the current socket
 			// As the new message will be added manually in 'main.js' file
 			// socket.emit('addMessage', message);
+			var userId = socket.request.session.passport.user;			
 			
+			console.log("Message o server : " + message.content + " " + userId)
 			socket.broadcast.to(roomId).emit('addMessage', message);
+
+			var messageA = {
+				content: message.content,
+				created: message.date,
+				connections: {
+					userId: userId,
+					roomId: roomId
+				}
+				
+			}
+
+		    Message.create(messageA,  (error, newMessage) => {
+				if(error) throw error;
+			})
 		});
 
 	});
@@ -123,13 +147,13 @@ var init = function(app){
 	// Force Socket.io to ONLY use "websockets"; No Long Polling.
 	io.set('transports', ['websocket']);
 
-	// Using Redis
-	let port = config.redis.port;
-	let host = config.redis.host;
-	let password = config.redis.password;
-	let pubClient = redis(port, host, { auth_pass: password });
-	let subClient = redis(port, host, { auth_pass: password, return_buffers: true, });
-	io.adapter(adapter({ pubClient, subClient }));
+	// // Using Redis
+	// let port = config.redis.port;
+	// let host = config.redis.host;
+	// let password = config.redis.password;
+	// let pubClient = redis(port, host, { auth_pass: password });
+	// let subClient = redis(port, host, { auth_pass: password, return_buffers: true, });
+	// io.adapter(adapter({ pubClient, subClient }));
 
 	// Allow sockets to access session data
 	io.use((socket, next) => {

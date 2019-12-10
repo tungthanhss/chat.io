@@ -19,10 +19,12 @@ var init = function(){
 
 	// Serialize and Deserialize user instances to and from the session.
 	passport.serializeUser(function(user, done) {
+		console.log(" Auth Inside serializeUser")
 		done(null, user.id);
 	});
 
 	passport.deserializeUser(function(id, done) {
+		console.log(" Auth Inside deserializeUser")
 		User.findById(id, function (err, user) {
 			done(err, user);
 		});
@@ -30,13 +32,17 @@ var init = function(){
 
 	// Plug-in Local Strategy
 	passport.use(new LocalStrategy(
-	  function(username, password, done) {
-	    User.findOne({ username: new RegExp(username, 'i'), socialId: null }, function(err, user) {
-	      if (err) { return done(err); }
 
-	      if (!user) {
-	        return done(null, false, { message: 'Incorrect username or password.' });
-	      }
+	  function(username, password, done) {
+
+	    User.findOne({ username: new RegExp(username, 'i'), socialId: null }, function(err, user) {
+		  
+		console.log(" Auth Inside Plug-in Local Strategy + " + err + " " + user + "   " + password)
+		if (err) { return done(err); }
+
+	    if (!user) {
+	       return done(null, false, { message: 'Incorrect username or password.' });
+	    }
 
 	      user.validatePassword(password, function(err, isMatch) {
 	        	if (err) { return done(err); }
