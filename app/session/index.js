@@ -11,15 +11,21 @@ var config 		= require('../config');
  *
  */
 var init = function () {
-	if(process.env.NODE_ENV === 'production') {
+
+	console.log ("process.env.NODE_ENV" + process.env.NODE_ENV)
+	
+	if(true) {
+		console.log('Used MongoStore');
 		return session({
 			secret: config.sessionSecret,
 			resave: false,
 			saveUninitialized: false,
 			unset: 'destroy',
+			cookie: {maxAge: 365 * 24 * 60 * 60 * 1000},
 			store: new MongoStore({ mongooseConnection: db.Mongoose.connection })
 		});
 	} else {
+		console.log('Not Used MongoStore');
 		return session({
 			secret: config.sessionSecret,
 			resave: false,

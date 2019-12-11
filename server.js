@@ -14,6 +14,9 @@ var passport    = require('./app/auth');
 var ioServer 	= require('./app/socket')(app);
 var logger 		= require('./app/logger');
 
+var dotenv = require('dotenv').config({path: path.join(__dirname, '.env')})
+
+console.log(require('dotenv').config())
 // Set the port number
 var port = process.env.PORT || 3000;
 
