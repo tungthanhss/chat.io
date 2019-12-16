@@ -25,9 +25,6 @@ var logger 		= require('./app/logger');
 
 // var httpsServer = https.createServer(credentials, app);
 
-console.log("privateKey" + privateKey)
-
-
 var dotenv = require('dotenv').config({path: path.join(__dirname, '.env')})
 
 // Set the port number
