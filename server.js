@@ -14,9 +14,22 @@ var passport    = require('./app/auth');
 var ioServer 	= require('./app/socket')(app);
 var logger 		= require('./app/logger');
 
+// var fs = require('fs');
+// var http = require('http');
+// var https = require('https');
+
+// var privateKey  = fs.readFileSync('server.key', 'utf8');
+// var certificate = fs.readFileSync('server.crt', 'utf8');
+
+// var credentials = {key: privateKey, cert: certificate};
+
+// var httpsServer = https.createServer(credentials, app);
+
+console.log("privateKey" + privateKey)
+
+
 var dotenv = require('dotenv').config({path: path.join(__dirname, '.env')})
 
-console.log(require('dotenv').config())
 // Set the port number
 var port = process.env.PORT || 3000;
 

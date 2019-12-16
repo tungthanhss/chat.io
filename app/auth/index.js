@@ -19,7 +19,7 @@ var init = function(){
 
 	// Serialize and Deserialize user instances to and from the session.
 	passport.serializeUser(function(user, done) {
-		console.log(" Auth Inside serializeUser")
+		console.log(" Auth Inside serializeUser" + user.id)
 		done(null, user.id);
 	});
 
