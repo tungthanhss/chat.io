@@ -31,7 +31,7 @@ console.log("privateKey" + privateKey)
 var dotenv = require('dotenv').config({path: path.join(__dirname, '.env')})
 
 // Set the port number
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 3300;
 
 // View engine setup
 app.set('views', path.join(__dirname, 'app/views'));
